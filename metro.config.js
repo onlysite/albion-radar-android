@@ -4,21 +4,13 @@ const path = require('path');
 const projectRoot = __dirname;
 const config = getDefaultConfig(projectRoot);
 
-// Add local modules to watch paths
 const modulesRoot = path.join(projectRoot, 'modules');
 config.watchFolders = [modulesRoot];
 
-// ✅ 新增：路径别名 @ → 项目根目录
-config.resolver.alias = {
-  '@': projectRoot
-};
+// 👇 重点：把 css 加入可识别的源码后缀
+config.resolver.sourceExts = ['jsx', 'js', 'ts', 'tsx', 'json', 'css'];
 
-// Add additional asset extensions
-config.resolver.assetExts.push(
-  // Add any additional extensions here
-);
-
-// Configure source extensions
-config.resolver.sourceExts = ['jsx', 'js', 'ts', 'tsx', 'json'];
+// 官方推荐：css不要放在assetExts里，要放在sourceExts
+config.resolver.assetExts = config.resolver.assetExts.filter(ext => ext !== 'css');
 
 module.exports = config;
