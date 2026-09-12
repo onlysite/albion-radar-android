@@ -8,6 +8,11 @@ const config = getDefaultConfig(projectRoot);
 const modulesRoot = path.join(projectRoot, 'modules');
 config.watchFolders = [modulesRoot];
 
+// ✅ 新增：路径别名 @ → 项目根目录
+config.resolver.alias = {
+  '@': projectRoot
+};
+
 // Add additional asset extensions
 config.resolver.assetExts.push(
   // Add any additional extensions here
