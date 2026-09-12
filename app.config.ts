@@ -22,7 +22,7 @@ const schemeFromBundleId = `manus${timestamp}`;
 
 const env = {
   appName: "Albion Online Android Radar",
-  appSlug: "albion-radar-android",
+  appSlug: "1",
   logoUrl: "",
   scheme: schemeFromBundleId,
   iosBundleId: bundleId,
