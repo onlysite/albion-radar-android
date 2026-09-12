@@ -7,10 +7,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      EAS_NO_VCS: 1
-      EXPO_TOKEN: ${{ secrets.EXPO_EAS_TOKEN }}
+      # 适配项目 load-env.js，防止缺变量崩溃
       APP_NAME: "Albion Online Android Radar"
-      APP_SLUG: "1"
+      APP_SLUG: "albion-radar-android"
       NODE_OPTIONS: "--max-old-space-size=6144"
 
     steps:
@@ -39,14 +38,14 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Install EAS CLI
-        run: pnpm add -g eas-cli
-
       - name: Generate Android native project
         run: npx expo prebuild --platform android --clean
 
-      - name: Build Release APK (local)
-        run: eas build --platform android --profile release --local --non-interactive
+      - name: Build Release APK via Gradle
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew app:assembleRelease
 
       - name: Find APK location
         run: |
@@ -58,8 +57,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: albion-radar-release-apk
-          path: |
-            android/app/build/outputs/apk/release/app-release.apk
-            *.apk
+          path: android/app/build/outputs/apk/release/app-release-unsigned.apk
           retention-days: 30
           if-no-files-found: warn
