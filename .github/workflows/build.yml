@@ -8,11 +8,16 @@ jobs:
     runs-on: ubuntu-latest
     env:
       EAS_NO_VCS: 1
-      EXPO_TOKEN: ${{ secrets.EXPO_EAS_TOKEN }}   # ✅ EAS 鉴权
+      EXPO_TOKEN: ${{ secrets.EXPO_EAS_TOKEN }}
+      APP_NAME: "Albion Online Android Radar"
+      APP_SLUG: "1"
+      NODE_OPTIONS: "--max-old-space-size=6144"
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -41,7 +46,7 @@ jobs:
         run: npx expo prebuild --platform android --clean
 
       - name: Build Release APK (local)
-        run: eas build --platform android --profile release --local
+        run: eas build --platform android --profile release --local --non-interactive
 
       - name: Find APK location
         run: |
