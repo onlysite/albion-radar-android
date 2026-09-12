@@ -6,7 +6,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+    env:
+      EAS_NO_VCS: 1
+      EXPO_TOKEN: ${{ secrets.EXPO_EAS_TOKEN }}   # ✅ EAS 鉴权
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
